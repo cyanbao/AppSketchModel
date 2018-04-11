@@ -1,0 +1,22 @@
+{
+    "type": "ViewGroup",
+    "children": [
+        {
+            "type": "ViewGroup",
+            "children": [
+                {
+                    "type": "Button",
+                    "children": null
+                },
+                {
+                    "type": "EditTextView",
+                    "children": null
+                }
+            ]
+        },
+        {
+            "type": "ViewGroup",
+            "children": null
+        }
+    ]
+}
