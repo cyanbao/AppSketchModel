@@ -15,6 +15,20 @@ public class ControlIdentification {
     private int height;
     private int width;
     private String label;
+    private enum RelativeLayout_height{
+        UP,MIDDLE,DOWN
+    }
+    private enum RelativeLayout_width{
+        LEFT,MIDDLE,RIGHT
+    }
+    private RelativeLayout_height relativeLayout_height;
+    private RelativeLayout_width relativeLayout_width;
+
+    public ControlIdentification(){}
+
+//    public ControlIdentification(String label){
+//
+//    }
 
     public int getX() {
         return x;
