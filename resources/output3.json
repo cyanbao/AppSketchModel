@@ -1,0 +1,49 @@
+{
+  "type": "ViewGroup",
+  "children": [
+    {
+      "type": "ViewGroup",
+      "children": [
+        {
+          "type": "Button",
+          "children": null
+        },
+        {
+          "type": "EditTextView",
+          "children": null
+        },
+        {
+          "type": "Button",
+          "children": null
+        }
+      ]
+    },
+    {
+      "type": "ViewGroup",
+      "children": [
+        {
+          "type": "TextView",
+          "children": null
+        }
+      ]
+    },
+    {
+      "type": "ViewGroup",
+      "children": [
+        {
+          "type": "List",
+          "children": [
+            {
+              "type": "Image",
+              "children": null
+            },
+            {
+              "type": "TextView",
+              "children": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

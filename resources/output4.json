@@ -1,0 +1,88 @@
+{
+    "type": "ViewGroup",
+    "children": [
+        {
+            "type": "ViewGroup",
+            "children": [
+                {
+                    "type": "Button",
+                    "children": null
+                },
+                {
+                    "type": "EditTextView",
+                    "children": null
+                }
+            ]
+        },
+        {
+            "type": "ViewGroup",
+            "children": [
+                {
+                    "type": "ViewGroup",
+                    "children": [
+                        {
+                            "type": "Image",
+                            "children": null
+                        },
+                        {
+                            "type": "TextView",
+                            "children": null
+                        },
+                        {
+                            "type": "{}utton",
+                            "children": null
+                        },
+                        {
+                            "type": "{}utton",
+                            "children": null
+                        }
+                    ]
+                },
+                {
+                    "type": "TextView",
+                    "children": null
+                }
+            ]
+        },
+        {
+            "type": "ViewGroup",
+            "children": [
+                {
+                    "type": "TextView",
+                    "children": null
+                }
+            ]
+        },
+        {
+            "type": "ViewGroup",
+            "children": [
+                {
+                    "type": "List",
+                    "chilren": [
+                        {
+                            "type": "ViewGroup",
+                            "children": [
+                                {
+                                    "type": "Image",
+                                    "children": null
+                                },
+                                {
+                                    "type": "TextView",
+                                    "children": null
+                                },
+                                {
+                                    "type": "Image",
+                                    "children": null
+                                }
+                            ]
+                        },
+                        {
+                            "type": "TextView",
+                            "children": null
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

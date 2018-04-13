@@ -9,7 +9,7 @@ package ControlIdentification;
 * ...
 *
 * */
-public class ControlIdentification {
+public class ControlsType{
     private int x;
     private int y;
     private int height;
@@ -24,7 +24,7 @@ public class ControlIdentification {
     private RelativeLayout_height relativeLayout_height;
     private RelativeLayout_width relativeLayout_width;
 
-    public ControlIdentification(){}
+
 
 //    public ControlIdentification(String label){
 //

@@ -41,6 +41,7 @@ public class DataAnalysis implements StandardizedData{
         return convertList;
     }
 
+    /*判断元素嵌套关系*/
     public static boolean JudgeRelation(SketchType s1, SketchType s2){
         if(s2.getPos_x()>=s1.getPos_x()
                 &&s2.getPos_x()<=(s1.getPos_x()+s1.getWidth())
