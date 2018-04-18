@@ -3,11 +3,19 @@ package ControlIdentification;
 /**
  * Created by Cyan on 2018/4/12.
  */
-public class ControlsTypeTreeNode {
+public class ControlsTreeNode {
     private int nodeId;
     private int parentId;
     private ControlsType controlsType;
 
+
+    /**
+     * 构造函数
+     * @param nodeId 节点id
+     */
+    public ControlsTreeNode(int nodeId){
+        this.nodeId = nodeId;
+    }
 
     public int getNodeId() {
         return nodeId;
