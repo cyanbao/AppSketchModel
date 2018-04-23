@@ -1,3 +1,4 @@
+import ControlsLayout.ControlsRecognition;
 import DataAnalysis.DataAnalysis;
 import DataAnalysis.FileReadIn;
 import SketchType.SketchType;
@@ -13,7 +14,7 @@ import java.util.List;
  */
 public class Main {
     public static void main(String []args){
-        FileReadIn.ReadFileByLines("resources/test2.txt");
+        FileReadIn.ReadFileByLines("resources/test1.txt");
         Iterator<SketchType> it = FileReadIn.shapeList.iterator();
         int line = 0;
         while(it.hasNext()){
@@ -67,5 +68,11 @@ public class Main {
         //System.out.println("null sketchManyTreeNode");
         System.out.println("PreOrder Result："+sketchManyNodeTree.iteratorTree(sketchManyNodeTree.getRoot()));
 
+        ControlsRecognition controlsRecognition = new ControlsRecognition();
+        List<Integer> list = controlsRecognition.DepthFirstSearch(sketchManyNodeTree.getRoot());
+        System.out.println("DFS Result: ");
+        for(int i=0;i<list.size();i++){
+            System.out.print(list.get(i)+",");
+        }
     }
 }
