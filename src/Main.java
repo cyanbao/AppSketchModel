@@ -1,4 +1,6 @@
 import ControlsLayout.ControlsRecognition;
+import ControlsType.ControlsManyNodeTree;
+import ControlsType.ControlsTreeNode;
 import DataAnalysis.DataAnalysis;
 import DataAnalysis.FileReadIn;
 import SketchType.SketchType;
@@ -14,7 +16,7 @@ import java.util.List;
  */
 public class Main {
     public static void main(String []args){
-        FileReadIn.ReadFileByLines("resources/test1.txt");
+        FileReadIn.ReadFileByLines("resources/test2.txt");
         Iterator<SketchType> it = FileReadIn.shapeList.iterator();
         int line = 0;
         while(it.hasNext()){
@@ -58,21 +60,30 @@ public class Main {
                 sketchTreeNodeList.get(i).setParentId(num);
             }
         }
-        for(int i=0;i<sketchTreeNodeList.size();i++){
+      /*  for(int i=0;i<sketchTreeNodeList.size();i++){
             System.out.println("relate"+sketchTreeNodeList.get(i).getNodeId()+","+sketchTreeNodeList.get(i).getParentId());
-        }
+        }*/
 
-        /*创建多叉树*/
+        /*创建多叉元素树*/
         SketchManyNodeTree sketchManyNodeTree = new SketchManyNodeTree();
         sketchManyNodeTree = sketchManyNodeTree.CreateTree(sketchTreeNodeList);
         //System.out.println("null sketchManyTreeNode");
         System.out.println("PreOrder Result："+sketchManyNodeTree.iteratorTree(sketchManyNodeTree.getRoot()));
 
+//        ControlsRecognition controlsRecognition = new ControlsRecognition();
+//        List<Integer> list = controlsRecognition.DepthFirstSearch(sketchManyNodeTree.getRoot());
+//        System.out.println("DFS Result: ");
+//        for(int i=0;i<list.size();i++){
+//            System.out.print(list.get(i)+",");
+//        }
+
+        /*创建多叉控件树*/
         ControlsRecognition controlsRecognition = new ControlsRecognition();
-        List<Integer> list = controlsRecognition.DepthFirstSearch(sketchManyNodeTree.getRoot());
-        System.out.println("DFS Result: ");
-        for(int i=0;i<list.size();i++){
-            System.out.print(list.get(i)+",");
-        }
+        List<ControlsTreeNode> controlsTreeNodeList = new ArrayList<>();
+        controlsTreeNodeList = controlsRecognition.CreateControlsTreeNodeList(sketchTreeNodeList);
+        ControlsManyNodeTree controlsManyNodeTree = new ControlsManyNodeTree();
+        controlsManyNodeTree = controlsManyNodeTree.CreateTree(controlsTreeNodeList);
+
+        System.out.println("ControlsTree PreOrder Result:" +controlsManyNodeTree.iteratorTree(controlsManyNodeTree.getRoot()));
     }
 }
