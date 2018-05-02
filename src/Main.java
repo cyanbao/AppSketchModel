@@ -1,5 +1,6 @@
 import ControlsLayout.ControlsRecognition;
 import ControlsType.ControlsManyNodeTree;
+import ControlsType.ControlsManyTreeNode;
 import ControlsType.ControlsTreeNode;
 import DataAnalysis.DataAnalysis;
 import DataAnalysis.FileReadIn;
@@ -16,7 +17,7 @@ import java.util.List;
  */
 public class Main {
     public static void main(String []args){
-        FileReadIn.ReadFileByLines("resources/test2.txt");
+        FileReadIn.ReadFileByLines("resources/test-navigationview.txt");
         Iterator<SketchType> it = FileReadIn.shapeList.iterator();
         int line = 0;
         while(it.hasNext()){
@@ -85,5 +86,14 @@ public class Main {
         controlsManyNodeTree = controlsManyNodeTree.CreateTree(controlsTreeNodeList);
 
         System.out.println("ControlsTree PreOrder Result:" +controlsManyNodeTree.iteratorTree(controlsManyNodeTree.getRoot()));
+
+        ControlsManyTreeNode root = controlsRecognition.DepthFirstSearch(controlsManyNodeTree.getRoot(),controlsTreeNodeList);
+
+        System.out.println("ControlsTree PreOrder Result: Finished!");
+
+
+
+
+
     }
 }

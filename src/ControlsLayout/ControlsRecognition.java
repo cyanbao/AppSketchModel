@@ -13,14 +13,14 @@ import java.util.Stack;
 /**
  * Created by Cyan on 2018/4/18.
  */
-public class ControlsRecognition implements ControlsName{
-
-    public List<ControlsTreeNode> CreateControlsTreeNodeList(List<SketchTreeNode> sketchTreeNodeList){
-        if(sketchTreeNodeList==null||sketchTreeNodeList.size()<0)
+public class ControlsRecognition implements ControlsName {
+    //创建控件原始树
+    public List<ControlsTreeNode> CreateControlsTreeNodeList(List<SketchTreeNode> sketchTreeNodeList) {
+        if (sketchTreeNodeList == null || sketchTreeNodeList.size() < 0)
             return null;
 
         List<ControlsTreeNode> controlsTreeNodeList = new ArrayList<ControlsTreeNode>();
-        for(int i=0;i<sketchTreeNodeList.size();i++){
+        for (int i = 0; i < sketchTreeNodeList.size(); i++) {
             ControlsTreeNode controlsTreeNode = new ControlsTreeNode(
                     sketchTreeNodeList.get(i).getNodeId(),
                     sketchTreeNodeList.get(i).getParentId(),
@@ -42,8 +42,8 @@ public class ControlsRecognition implements ControlsName{
     * 第二步:对控件树进行优化扫描，提取可能存在的View
     * 第三步：返回这一棵控件树
     * */
-    public ControlsManyTreeNode DepthFirstSearch(ControlsManyTreeNode root){
-        if(root==null)
+    public ControlsManyTreeNode DepthFirstSearch(ControlsManyTreeNode root,List<ControlsTreeNode> controlsList) {
+        if (root == null)
             return null;
 
 //        /*特殊情况，界面为空界面*/
@@ -55,32 +55,33 @@ public class ControlsRecognition implements ControlsName{
 
         Stack<ControlsManyTreeNode> stack = new Stack<ControlsManyTreeNode>();
         stack.push(root);
-        while(!stack.isEmpty()){
+        JudgeRootChange judgeRootChange;
+
+        while (!stack.isEmpty()) {
             ControlsManyTreeNode treeNode = stack.pop();
-            /*Todo:
-            写判断函数
-            */
-            if(JudgeIsLeafNode(treeNode)){
+
+            if (JudgeIsLeafNode(treeNode)) {
                 //true:改变，false：未改变
-                boolean flag = ReplaceControlsTreeNode(root,treeNode);
-                if(flag==true){
-                    stack=new Stack<ControlsManyTreeNode>();
+                judgeRootChange = JudgeControls(root, treeNode,controlsList);
+                root = judgeRootChange.getRoot();
+                if (judgeRootChange.isFlag() == true) {
+                    //深度遍历，重新找到controlsList
+                    //controlsList = DepthFirstSearch(root);
+                    stack = new Stack<ControlsManyTreeNode>();
                     stack.push(root);
                 }
             }
             else {
+                if(treeNode.getData().getControlsType().getType()==6){
+                    JudgeControls(root,treeNode,controlsList);
+                }
                 //将root的childList从右往左压
-                  int size = treeNode.getChildList().size();
-              //将childList倒序排列
+                int size = treeNode.getChildList().size();
+                //将childList倒序排列
                 for (int i = size - 1; i >= 0; i--) {
                     stack.push(treeNode.getChildList().get(i));
                 }
             }
-
-
-
-
-
 
 
         }
@@ -88,15 +89,100 @@ public class ControlsRecognition implements ControlsName{
     }
 
 
-    public ControlsManyTreeNode FindParentNode(ControlsManyTreeNode treeNode){
-        return treeNode;
+
+    //DFS，返回list
+    public List<ControlsTreeNode> DepthFirstSearch(ControlsManyTreeNode root){
+        List<ControlsTreeNode> controlsList = new ArrayList<ControlsTreeNode>();
+        Stack<ControlsManyTreeNode> stack = new Stack<ControlsManyTreeNode>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            ControlsManyTreeNode currentNode = stack.pop();
+            controlsList.add(currentNode.getData());
+            int size = currentNode.getChildList().size();
+            //将childList倒序排列
+            for (int i = size - 1; i >= 0; i--) {
+                stack.push(currentNode.getChildList().get(i));
+            }
+        }
+        return controlsList;
     }
-    public boolean ReplaceControlsTreeNode(ControlsManyTreeNode root,ControlsManyTreeNode treeNode){
+
+    //在控件链表里寻找父节点
+    public ControlsManyTreeNode FindParentNode(ControlsManyTreeNode root,ControlsManyTreeNode treeNode) {
+        int parentId = treeNode.getData().getParentId();
+        Stack<ControlsManyTreeNode> stack = new Stack<ControlsManyTreeNode>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            ControlsManyTreeNode currentNode = stack.pop();
+            if(currentNode.getData().getNodeId()==parentId)
+                return currentNode;
+            int size = currentNode.getChildList().size();
+            //将childList倒序排列
+            for (int i = size - 1; i >= 0; i--) {
+                stack.push(currentNode.getChildList().get(i));
+            }
+        }
+        return null;
+    }
+
+
+
+
+    //判断控件方法
+    public JudgeRootChange JudgeControls(ControlsManyTreeNode root,ControlsManyTreeNode treeNode,List<ControlsTreeNode> controlsList){
+        boolean flag = false;
         int type = treeNode.getData().getControlsType().getType();
+        ControlsManyTreeNode parentNode = FindParentNode(root,treeNode);
+
         //发现叶子节点为 |（竖线）
         if(type==1){
-            //找到父节点，符合要求修改父节点label为控件名
+            List<ControlsManyTreeNode> childList = parentNode.getChildList();
+            //TabHost，父节点的类型为方框，childList长度为3,均为竖线，修改父节点，并把子节点删去
+            if(parentNode.getData().getControlsType().getLabel().equals(View)&&childList.size()==2){
+                if(childList.get(0).getData().getControlsType().getType()==1
+                        &&childList.get(1).getData().getControlsType().getType()==1){
+                    flag=true;
 
+                    //改变父节点
+                    for(int i=0;i<controlsList.size();i++){
+                        if(controlsList.get(i).getNodeId()==parentNode.getData().getNodeId()){
+                            controlsList.get(i).getControlsType().setControlsTypeAndLabel(-1,TabHost);
+                            break;
+                        }
+                    }
+                    //删去子节点
+                    for(int i=0;i<controlsList.size();i++){
+                        if(controlsList.get(i).getParentId()==parentNode.getData().getNodeId()){
+                            controlsList.remove(i);
+                            i=i-1;
+                        }
+                    }
+                }
+            }
+            //Navigation,父节点为View，子节点大小为4，分别为| — — —
+            else if(parentNode.getData().getControlsType().getLabel().equals(View)&&childList.size()==4){
+                if(childList.get(0).getData().getControlsType().getType()==1
+                        &&childList.get(1).getData().getControlsType().getType()==13
+                        &&childList.get(2).getData().getControlsType().getType()==13
+                        &&childList.get(3).getData().getControlsType().getType()==13){
+                    flag=true;
+
+                    //改变父节点
+                    for(int i=0;i<controlsList.size();i++){
+                        if(controlsList.get(i).getNodeId()==parentNode.getData().getNodeId()){
+                            controlsList.get(i).getControlsType().setControlsTypeAndLabel(-1,NavigationView);
+                            break;
+                        }
+                    }
+                    //删去子节点
+                    for(int i=0;i<controlsList.size();i++){
+                        if(controlsList.get(i).getParentId()==parentNode.getData().getNodeId()){
+                            controlsList.remove(i);
+                            i=i-1;
+                        }
+                    }
+                }
+            }
         }
         else if(type==2){
 
@@ -111,7 +197,13 @@ public class ControlsRecognition implements ControlsName{
             //找父节点有无额外的子节点
         }
         else if(type==6) {//为方框
-            //改对应节点的label为View
+            //改对应节点的type为view
+            for(int i=0;i<controlsList.size();i++){
+                if(controlsList.get(i).getNodeId()==treeNode.getData().getNodeId()){
+                    controlsList.get(i).getControlsType().setControlsTypeAndLabel(-1,View);
+                    break;
+                }
+            }
         }
         else if(type==7){//为下箭头
             //找父节点有无额外子节点
@@ -136,20 +228,26 @@ public class ControlsRecognition implements ControlsName{
         }
         else if(type==-1){
             //已经识别为已经控件
+
         }
         else{
             System.out.println("No such sketch type:"+type);
         }
 
-
-        return false;
+        ControlsManyNodeTree tree = new ControlsManyNodeTree();
+        tree = tree.CreateTree(controlsList);
+        root = tree.getRoot();
+        return new JudgeRootChange(root,flag);
     }
 
+
+    //判断是否为叶子节点
     public boolean JudgeIsLeafNode(ControlsManyTreeNode node){
         if(node.getChildList().size()==0||node.getChildList()==null)
             return true;
         return false;
     }
+
 
 
 //    public static void main(String args[]){
