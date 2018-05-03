@@ -11,7 +11,7 @@ public interface ControlsName {
     String EditTextView = "EditTextView";
     String ImageView = "ImageView";
     String Overflow = "Overflow";
-    String Video = "Video";
+    String VideoView = "VideoView";
     String TextUrl = "TextUrl";
     String Menu = "Menu";
     String TabBar = "TabBar";
@@ -24,5 +24,6 @@ public interface ControlsName {
     String CheckBox = "CheckBox";//单选框
     String ContentDisplay = "ContentDisplay";//内容轮显
     String Lane = "Lane";//泳道模式
+    String Grid = "Grid";//网格模式
     String Card = "Card";//卡片模式
 }

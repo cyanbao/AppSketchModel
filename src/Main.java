@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class Main {
     public static void main(String []args){
-        FileReadIn.ReadFileByLines("resources/test-navigationview.txt");
+        FileReadIn.ReadFileByLines("resources/test-list2.txt");
         Iterator<SketchType> it = FileReadIn.shapeList.iterator();
         int line = 0;
         while(it.hasNext()){
