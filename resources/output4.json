@@ -58,7 +58,7 @@
             "children": [
                 {
                     "type": "List",
-                    "chilren": [
+                    "children": [
                         {
                             "type": "ViewGroup",
                             "children": [

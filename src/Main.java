@@ -4,6 +4,7 @@ import ControlsType.ControlsManyTreeNode;
 import ControlsType.ControlsTreeNode;
 import DataAnalysis.DataAnalysis;
 import DataAnalysis.FileReadIn;
+import DataAnalysis.FileWriteOut;
 import SketchType.SketchType;
 import SketchType.SketchTreeNode;
 import SketchType.SketchManyNodeTree;
@@ -91,9 +92,6 @@ public class Main {
 
         System.out.println("ControlsTree PreOrder Result: Finished!");
 
-
-
-
-
+        FileWriteOut.FileWriteOutByJson(root);
     }
 }

@@ -4,7 +4,7 @@ package ControlsType;
  * Created by Cyan on 2018/4/23.
  */
 public interface ControlsName {
-    String View ="View";
+    String View ="ViewGroup";
     String ViewGroup = "ViewGroup";
     String Button = "Button";
     String TextView = "TextView";
