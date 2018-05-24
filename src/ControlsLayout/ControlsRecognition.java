@@ -3,8 +3,10 @@ package ControlsLayout;
 import ControlsType.*;
 import SketchType.SketchManyTreeNode;
 import SketchType.SketchTreeNode;
+import javafx.geometry.Pos;
 
 import javax.naming.ldap.Control;
+import javax.swing.text.Position;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -82,12 +84,9 @@ public class ControlsRecognition implements ControlsName {
                     stack.push(treeNode.getChildList().get(i));
                 }
             }
-
-
         }
         return root;
     }
-
 
 
     //DFS，返回list
@@ -124,8 +123,6 @@ public class ControlsRecognition implements ControlsName {
         }
         return null;
     }
-
-
 
 
     //判断控件方法
@@ -187,23 +184,66 @@ public class ControlsRecognition implements ControlsName {
         else if(type==2){
             List<ControlsManyTreeNode> childList = parentNode.getChildList();
             //VideoView
-            if(parentNode.getData().getControlsType().getLabel().equals(View)&&childList.size()==2){
-                if(childList.get(0).getData().getControlsType().getType()==2
-                        &&childList.get(1).getData().getControlsType().getType()==3){
-                    flag=true;
+            if(parentNode.getData().getControlsType().getLabel().equals(View)&&childList.size()==2) {
+                if (childList.get(0).getData().getControlsType().getType() == 2
+                        && childList.get(1).getData().getControlsType().getType() == 3) {
+                    flag = true;
 
                     //改变父节点
-                    for(int i=0;i<controlsList.size();i++){
-                        if(controlsList.get(i).getNodeId()==parentNode.getData().getNodeId()){
-                            controlsList.get(i).getControlsType().setControlsTypeAndLabel(-1,VideoView);
+                    for (int i = 0; i < controlsList.size(); i++) {
+                        if (controlsList.get(i).getNodeId() == parentNode.getData().getNodeId()) {
+                            controlsList.get(i).getControlsType().setControlsTypeAndLabel(-1, VideoView);
                             break;
                         }
                     }
                     //删去子节点
-                    for(int i=0;i<controlsList.size();i++){
-                        if(controlsList.get(i).getParentId()==parentNode.getData().getNodeId()){
+                    for (int i = 0; i < controlsList.size(); i++) {
+                        if (controlsList.get(i).getParentId() == parentNode.getData().getNodeId()) {
                             controlsList.remove(i);
-                            i=i-1;
+                            i = i - 1;
+                        }
+                    }
+                }
+                //SeekBar
+                else if(childList.get(0).getData().getControlsType().getType() == 2
+                        && childList.get(1).getData().getControlsType().getType() == 7) {
+                    flag = true;
+                    //改变父节点
+                    for (int i = 0; i < controlsList.size(); i++) {
+                        if (controlsList.get(i).getNodeId() == parentNode.getData().getNodeId()) {
+                            controlsList.get(i).getControlsType().setControlsTypeAndLabel(-1, SeekBar);
+                            break;
+                        }
+                    }
+                    //删去子节点
+                    for (int i = 0; i < controlsList.size(); i++) {
+                        if (controlsList.get(i).getParentId() == parentNode.getData().getNodeId()) {
+                            controlsList.remove(i);
+                            i = i - 1;
+                        }
+                    }
+
+                }
+            }
+            else if(parentNode.getData().getControlsType().getLabel().equals(View)&&childList.size()==3) {
+                //Switch
+                if (childList.get(0).getData().getControlsType().getType() == 2
+                        && childList.get(1).getData().getControlsType().getType() == 7
+                        && childList.get(2).getData().getControlsType().getType() == 4) {
+                    flag = true;
+
+                    //改变父节点
+                    for (int i = 0; i < controlsList.size(); i++) {
+                        if (controlsList.get(i).getNodeId() == parentNode.getData().getNodeId()) {
+                            controlsList.get(i).getControlsType().setControlsTypeAndLabel(-1, Switch);
+                            break;
+                        }
+                    }
+                    //删去子节点
+                    for (int i = 0; i < controlsList.size(); i++) {
+                        if (controlsList.get(i).getParentId() == parentNode.getData().getNodeId()) {
+                            controlsList.remove(i);
+                            i = i - 1;
                         }
                     }
                 }
@@ -401,7 +441,7 @@ public class ControlsRecognition implements ControlsName {
                         &&childList.get(2).getData().getControlsType().getType() == 2) {
                     flag = true;
 
-                    //改变父节点
+                    //改变父节点A
                     for (int i = 0; i < controlsList.size(); i++) {
                         if (controlsList.get(i).getNodeId() == parentNode.getData().getNodeId()) {
                             controlsList.get(i).getControlsType().setControlsTypeAndLabel(-1, CompoundButton);
@@ -500,11 +540,11 @@ public class ControlsRecognition implements ControlsName {
             }
 
         }
-        else if(type==7){//为下箭头
+        else if(type==14){//为下箭头
             //Overflow
             List<ControlsManyTreeNode> childList = parentNode.getChildList();
             if(parentNode.getData().getControlsType().getLabel().equals(View)&&childList.size()==1) {
-                if (childList.get(0).getData().getControlsType().getType() == 7) {
+                if (childList.get(0).getData().getControlsType().getType() == 14) {
                     flag = true;
 
                     //改变父节点
@@ -526,7 +566,7 @@ public class ControlsRecognition implements ControlsName {
             //List
             else if(parentNode.getData().getControlsType().getLabel().equals(View)&&childList.size()==2) {
                 if (childList.get(0).getData().getControlsType().getLabel().equals(View)
-                        &&childList.get(1).getData().getControlsType().getType()==7) {
+                        &&childList.get(1).getData().getControlsType().getType()==14) {
                     flag = true;
 
                     //改变父节点
@@ -599,7 +639,6 @@ public class ControlsRecognition implements ControlsName {
         }
         else if(type==-1){
             //已经识别为已经控件
-
             List<ControlsManyTreeNode> childList = parentNode.getChildList();
             if(parentNode.getData().getControlsType().getLabel().equals(View)&&childList.size()==5) {
                 if (childList.get(0).getData().getControlsType().getType()==-1
@@ -625,7 +664,6 @@ public class ControlsRecognition implements ControlsName {
                                 i = i - 1;
                             }
                         }
-
                     }
                     else if(childList.get(0).getData().getControlsType().getLabel().equals(Button)
                             &&childList.get(2).getData().getControlsType().getLabel().equals(Button)
@@ -667,6 +705,148 @@ public class ControlsRecognition implements ControlsName {
     }
 
 
+    public ControlsManyTreeNode PredictView(ControlsManyTreeNode root){
+        List<ControlsTreeNode> controlsList = DepthFirstSearch(root);
+        if (root == null)
+            return null;
+        Stack<ControlsManyTreeNode> stack = new Stack<ControlsManyTreeNode>();
+        stack.push(root);
+
+        JudgeRootChange judgeRootChange;
+
+        while (!stack.isEmpty()) {
+            ControlsManyTreeNode treeNode = stack.pop();
+            judgeRootChange = PredictView(root, treeNode, controlsList);
+            root = judgeRootChange.getRoot();
+            if (judgeRootChange.isFlag() == true) {
+                stack = new Stack<ControlsManyTreeNode>();
+                stack.push(root);
+            }
+            else {
+                //将root的childList从右往左压
+                int size = treeNode.getChildList().size();
+                //将childList倒序排列
+                for (int i = size - 1; i >= 0; i--) {
+                    stack.push(treeNode.getChildList().get(i));
+                }
+            }
+        }
+        return root;
+    }
+
+    //预测可能存在的视图
+    public JudgeRootChange PredictView(ControlsManyTreeNode root,ControlsManyTreeNode treeNode,List<ControlsTreeNode> controlsList){
+        boolean flag = false;
+        List<ControlsManyTreeNode> childList = treeNode.getChildList();
+        int count = 0;
+        //判断如果一个View中所有控件在同一水平线，若在则不需要重新生成View
+        for(int i=0;i<childList.size()-1;i++){
+            boolean isHorizontal = true;
+            ControlsType control1 = childList.get(i).getData().getControlsType();
+            ControlsType control2 = childList.get(i+1).getData().getControlsType();
+            int h_center1 = control1.getY()+control1.getHeight()/2;
+            int h_center2 = control2.getY()+control2.getHeight()/2;
+            if(h_center1-h_center2>(-24)&&h_center1-h_center2<24){
+                count++;
+            }
+            else
+                isHorizontal = false;
+            if(isHorizontal==false)break;
+        }
+        if(count==childList.size()-1)
+            return new JudgeRootChange(root,flag);
+
+        for(int i=0;i<childList.size()-1;i++){
+            ControlsManyTreeNode controls1 = childList.get(i);
+            ControlsManyTreeNode controls2 = childList.get(i+1);
+            ControlsType control1 = controls1.getData().getControlsType();
+            ControlsType control2 = controls2.getData().getControlsType();
+            int h_center1 = control1.getY()+control1.getHeight()/2;
+            int h_center2 = control2.getY()+control2.getHeight()/2;
+            if(h_center1-h_center2>(-24)&&h_center1-h_center2<24){
+                //两个控件位置水平相似建立一个预测的视图
+                //建立一个新视图并且判断有无其余控件覆盖
+                //找出最大nodeId
+                int maxId = 0;
+                for(int j=0;j<controlsList.size();j++){
+                    if(controlsList.get(j).getNodeId()>maxId)
+                        maxId = controlsList.get(j).getNodeId();
+                }
+                ControlsTreeNode newView = new ControlsTreeNode(maxId+1);
+
+                int x=0,y=0,height=0,width=0,type=0;
+                if(control1.getX()<control2.getX())
+                    x = control1.getX();
+                else
+                    x = control2.getX();
+                if(control1.getY()<control2.getY())
+                    y = control1.getY();
+                else
+                    y = control2.getY();
+                if((control1.getY()+control1.getHeight())<(control2.getY()+control2.getHeight()))
+                    height = control2.getY()+ control2.getHeight()-y;
+                else
+                    height = control1.getY()+control1.getHeight()-y;
+                if(control1.getX()+control1.getWidth()<control2.getX()+control2.getWidth())
+                    width = control2.getX()+control2.getWidth() - x;
+                else
+                    width = control1.getX()+control1.getWidth() - x;
+
+                ControlsType controlsType = new ControlsType(x,y,height,width,View,type);
+                newView.setControlsType(controlsType);
+
+                Boolean isIn = false;
+                for(int k=0;k<childList.size();k++){
+                    if(k!=i&&k!=i+1){
+                        ControlsType control3 = childList.get(k).getData().getControlsType();
+                        ControlsType control4 = newView.getControlsType();
+                        if(control3.getX()+control3.getWidth()>control4.getX()
+                                &&control4.getX()+control4.getWidth()>control3.getX()
+                                &&control3.getY()+control3.getHeight()>control4.getY()
+                                &&control4.getY()+control4.getHeight()>control3.getY()) {
+                            isIn = true;
+                            break;
+                        }
+                        else
+                            isIn = false;
+                    }
+                }
+                //如果不重叠
+                if(isIn==false){
+                    //判断这个视图是否为新建视图
+                    //如果是，把第二个控件放入该视图底下,并且扩充视图大小
+                    if(treeNode.getData().getControlsType().getType()==0){
+                        for(int p = 0;p<controlsList.size();p++){
+                            if(controlsList.get(p).getNodeId()==childList.get(i+1).getData().getNodeId()) {
+                                controlsList.get(p).setParentId(treeNode.getData().getNodeId());
+                                newView.setParentId(treeNode.getData().getNodeId());
+                                controlsList.get(i).setControlsType(newView.getControlsType());
+                            }
+                        }
+                    }
+                    //如果不是，新建一个视图层
+                    else {
+                        newView.setParentId(treeNode.getData().getNodeId());
+                        int pos = 0;
+                        for (int p = 0; p < controlsList.size(); p++) {
+                            if (controlsList.get(p).getNodeId() == childList.get(i).getData().getNodeId()
+                                     ||controlsList.get(p).getNodeId() == childList.get(i + 1).getData().getNodeId()) {
+                                controlsList.get(p).setParentId(newView.getNodeId());
+                                pos = p;
+                            }
+
+                        }
+                        controlsList.add(pos-1, newView);
+                    }
+                    flag =true;
+                    ControlsManyNodeTree tree = new ControlsManyNodeTree();
+                    tree = tree.CreateTree(controlsList);
+                    root = tree.getRoot();
+                }
+            }
+        }
+        return new JudgeRootChange(root,flag);
+    }
 
 //    public static void main(String args[]){
 //        ControlsManyTreeNode node = new ControlsManyTreeNode(new ControlsTreeNode(2));

@@ -9,17 +9,25 @@ import SketchType.SketchType;
 import SketchType.SketchTreeNode;
 import SketchType.SketchManyNodeTree;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by Cyan on 2018/3/29.
  */
 public class Main {
-    public static void main(String []args){
-        FileReadIn.ReadFileByLines("resources/test-list2.txt");
+    public static void main(String []args)throws IOException{
+        Scanner input = new Scanner(System.in);
+        System.out.print("Please input filename:");
+        String inputString = input.next();
+        String filename = "C:/Users/Cyan/Desktop/AppSketchModel/resources/ShowExample/"+inputString;
+        System.out.println("fff"+filename);
+        FileReadIn.ReadFileByLines(filename);
         Iterator<SketchType> it = FileReadIn.shapeList.iterator();
+        filename = filename.substring(0,filename.lastIndexOf("."));
         int line = 0;
         while(it.hasNext()){
             SketchType p = it.next();
@@ -57,7 +65,7 @@ public class Main {
                 boolean flag = false;
                 while(flag==false) {
                     flag = DataAnalysis.JudgeRelation(sketchTreeNodeList.get(--num).getSketchType(), sketchTreeNodeList.get(i).getSketchType());
-                    //System.out.println("flag:"+flag);
+                    //System.out.println("flag:"+flag);版本，有待测试
                 }
                 sketchTreeNodeList.get(i).setParentId(num);
             }
@@ -90,8 +98,14 @@ public class Main {
 
         ControlsManyTreeNode root = controlsRecognition.DepthFirstSearch(controlsManyNodeTree.getRoot(),controlsTreeNodeList);
 
-        System.out.println("ControlsTree PreOrder Result: Finished!");
+      //  System.out.println("ControlsTree PreOrder Result: Finished!");
 
-        FileWriteOut.FileWriteOutByJson(root);
+        FileWriteOut.FileWriteOutByJson(root,filename);
+
+
+        root = controlsRecognition.PredictView(root);
+        FileWriteOut.FileWriteOutByJson(root,filename+"viewPredict");
+
+        System.out.println("Output Successfully!");
     }
 }

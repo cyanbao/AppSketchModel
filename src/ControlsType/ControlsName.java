@@ -12,12 +12,14 @@ public interface ControlsName {
     String ImageView = "ImageView";
     String Overflow = "Overflow";
     String VideoView = "VideoView";
+    String Switch = "Switch";
+    String SeekBar = "SeekBar";
     String TextUrl = "TextUrl";
     String Menu = "Menu";
     String TabBar = "TabBar";
     String TabHost = "TabHost";
     String ListView = "List";//列表
-    String AlertDialog = "AlertDialog";//对话框
+    String AlertDialog = "Dialog";//对话框
     String NavigationView = "NavigationView";//抽屉
     String FloatActionButton = "FloatActionButton";
     String CompoundButton = "CompoundButton";//复选框
