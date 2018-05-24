@@ -1,7 +1,7 @@
 package DataAnalysis;
 
 import SketchType.SketchType;
-
+import SketchType.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -51,4 +51,37 @@ public class DataAnalysis implements StandardizedData{
         }
         return false;
     }
+
+    /*为每个节点编号*/
+    public static  List<SketchTreeNode> AddId( List<SketchType> convertList ){
+        List<SketchTreeNode> sketchTreeNodeList = new ArrayList<>();
+        Iterator<SketchType> it_t = convertList.iterator();
+        //给每一个元素编号
+        int id = 0;
+        while(it_t.hasNext()){
+            SketchType p = it_t.next();
+            SketchTreeNode sketchTreeNode = new SketchTreeNode(id,p);
+            sketchTreeNodeList.add(sketchTreeNode);
+            id++;
+        }
+        return sketchTreeNodeList;
+    }
+
+    /*设置每一个节点关系*/
+    public static List<SketchTreeNode> JudgeNodeRelation(List<SketchTreeNode> sketchTreeNodeList) {
+        for (int i = 0; i < sketchTreeNodeList.size(); i++) {
+            if (i == 0) {
+                sketchTreeNodeList.get(i).setParentId(-1);
+            } else {
+                int num = i;
+                boolean flag = false;
+                while (flag == false) {
+                    flag = JudgeRelation(sketchTreeNodeList.get(--num).getSketchType(), sketchTreeNodeList.get(i).getSketchType());
+                }
+                sketchTreeNodeList.get(i).setParentId(num);
+            }
+        }
+        return sketchTreeNodeList;
+    }
+
 }
